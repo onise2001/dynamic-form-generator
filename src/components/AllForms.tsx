@@ -1,8 +1,7 @@
-import React from "react";
 import { useMainContext } from "../contexts/MainContext";
 import styled from "styled-components";
 import { Title } from "../my-styled-components/GlobalStyles";
-import { Form, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function AllForms() {
   const { myForms } = useMainContext();

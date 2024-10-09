@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useMainContext } from "../contexts/MainContext";
 import {
@@ -28,11 +28,13 @@ export default function ShowForm() {
     }
   }, []);
 
-  const [schema, setSchema] = useState<yup.ObjectSchema<any>>({});
+  const [schema, setSchema] = useState<
+    yup.ObjectSchema<Record<string, yup.AnySchema>>
+  >(yup.object().shape({}));
 
   useEffect(() => {
     if (form) {
-      const shape: Record<string, any> = {};
+      const shape: Record<string, yup.AnySchema> = {};
       if (form) {
         form.inputs.forEach((input) => {
           let schema;
@@ -94,7 +96,6 @@ export default function ShowForm() {
           }
         });
       }
-      console.log(shape);
       setSchema(yup.object().shape(shape));
     }
   }, [form]);
@@ -132,9 +133,14 @@ export default function ShowForm() {
                 <Controller
                   name={item.label}
                   control={control}
-                  defaultValue={item.options[0]?.value}
+                  defaultValue={
+                    item.options ? (item.options[0]?.value as string | any) : ""
+                  }
                   render={({ field }) => (
-                    <select {...field}>
+                    <select
+                      {...field}
+                      value={(field.value as string | any) || ""}
+                    >
                       {item.options?.map((option) => (
                         <option value={option.value} key={Math.random()}>
                           {option.label}
@@ -147,7 +153,9 @@ export default function ShowForm() {
                 <Controller
                   name={item.label}
                   control={control}
-                  defaultValue={item.radioOptions[0].value}
+                  defaultValue={
+                    item.options ? (item.options[0]?.value as string | any) : ""
+                  }
                   render={({ field }) => (
                     <>
                       {item.radioOptions?.map((option) => (

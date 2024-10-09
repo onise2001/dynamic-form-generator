@@ -1,0 +1,1 @@
+{"root":["./src/global.d.ts","./src/main.tsx","./src/vite-env.d.ts","./src/layouts/mainlayout.tsx","./src/components/addinput.tsx","./src/components/allforms.tsx","./src/components/formgenerator.tsx","./src/components/header.tsx","./src/components/showform.tsx","./src/contexts/maincontext.tsx","./src/my-styled-components/globalstyles.ts"],"version":"5.6.2"}

@@ -16,7 +16,7 @@ interface InputType {
   type: string;
   label: string;
   placeholder: string;
-  options: Option[] | null;
+  options: Option[];
   radioOptions: Option[];
   text: string;
   position: { x: number; y: number } | null;

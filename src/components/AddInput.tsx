@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import {
   OrangeButton,
@@ -38,14 +38,16 @@ export default function AddInput() {
     value: "",
   });
 
-  const handleChange = (event) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setNewInput((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setInputs((prev) => [...prev, newInput]);
     setShow(false);
@@ -70,14 +72,14 @@ export default function AddInput() {
     });
   };
 
-  const handleOptionChange = (e) => {
+  const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewOption((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
     <FormPopup $show={show}>
       <AddInputFormContainer>
-        <AddInputForm onSubmit={onSubmit}>
+        <AddInputForm onSubmit={(e) => onSubmit(e)}>
           <InputContainer>
             <StyledLabel>Type</StyledLabel>
             <select onChange={handleChange} name="type" defaultValue="text">
@@ -97,7 +99,9 @@ export default function AddInput() {
                 type="text"
                 placeholder="Submit button text"
                 value={newInput.text}
-                onChange={handleChange}
+                onChange={(e) => {
+                  handleChange(e);
+                }}
                 name="text"
               />
             </InputContainer>
@@ -302,7 +306,7 @@ export default function AddInput() {
                 type: "",
                 placeholder: "",
                 label: "",
-                options: null,
+                options: [],
                 validations: {
                   min: "",
                   max: "",

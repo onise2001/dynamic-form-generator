@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   FormContainer,
   StyledForm,
@@ -48,7 +48,10 @@ export default function FormGenerator() {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   //const [initialPosition, setInitialPosition] = useState({ x: 0, y: 0 });
 
-  const handleMouseDown = (e, index: number) => {
+  const handleMouseDown = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number
+  ) => {
     setDraggingIndex(index);
     setOffset({
       x: e.clientX - positions[index].x,
@@ -56,14 +59,17 @@ export default function FormGenerator() {
     });
   };
 
-  const formRef = useRef(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
   const inputRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (draggingIndex !== null) {
-      const formRect = formRef.current.getBoundingClientRect();
-      const inputRect =
-        inputRefs.current[draggingIndex].getBoundingClientRect();
+      const formRect = formRef.current
+        ? formRef.current.getBoundingClientRect()
+        : { width: 750, height: 200 };
+      const inputRect = inputRefs.current[draggingIndex]
+        ? inputRefs.current[draggingIndex].getBoundingClientRect()
+        : { width: 300, height: 50 };
 
       const inputWidth = inputRect ? inputRect.width : 0;
       const newX = e.clientX - offset.x;
@@ -88,12 +94,7 @@ export default function FormGenerator() {
     setDraggingIndex(null);
   };
 
-  //   console.log(position);
-  //   console.log(dragging);
-  //   console.log(offset);
-  //   console.log(inputs.length);
-
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     positions.forEach((item, index) => {
       inputs[index].position = item;
@@ -129,7 +130,7 @@ export default function FormGenerator() {
           ref={formRef}
           //$numberOfInputs={inputs.length}
           $height={inputs.length > 0 ? 200 + inputs.length * 90 : 200}
-          onSubmit={onSubmit}
+          onSubmit={(e) => onSubmit(e)}
         >
           <FormTitleInput
             type="text"
